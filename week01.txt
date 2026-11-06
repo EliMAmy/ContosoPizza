@@ -1,0 +1,189 @@
+.Evidence from the end of the module Create a web API with ASP.NET Core controllers showing the existing pizzas and your additional pizza.
+
+post -c "{"name":"American", "isGlutenFree":false}"      
+HTTP/1.1 201 Created
+Content-Type: application/json; charset=utf-8
+Date: Thu, 05 Nov 2026 04:23:43 GMT
+Location: https://localhost:7043/Pizza/4
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{
+  "id": 4,
+  "name": "American",
+  "isGlutenFree": false
+}
+
+
+https://localhost:7043/Pizza> get
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Thu, 05 Nov 2026 04:23:45 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+[
+  {
+    "id": 1,
+    "name": "Classic Italian",
+    "isGlutenFree": false
+  },
+  {
+    "id": 2,
+    "name": "Veggie",
+    "isGlutenFree": true
+  },
+  {
+    "id": 4,
+    "name": "American",
+    "isGlutenFree": false
+  }
+]
+
+
+. For each operation (GET, POST, PUT, and DELETE), the request you sent, the response you received, and the returned status code.
+//GET
+get
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 06 Nov 2026 03:01:52 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+[
+  {
+    "id": 1,
+    "name": "Classic Italian",
+    "isGlutenFree": false
+  },
+  {
+    "id": 2,
+    "name": "Veggie",
+    "isGlutenFree": true
+  }
+]
+//POST
+https://localhost:7043/Pizza> post -c "{"name":"Patii", "isGlutenFree":false}"
+HTTP/1.1 201 Created
+Content-Type: application/json; charset=utf-8
+Date: Fri, 06 Nov 2026 03:18:15 GMT
+Location: https://localhost:7043/Pizza/3
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{
+  "id": 3,
+  "name": "HPatii",
+  "isGlutenFree": false
+}
+
+//PUT
+https://localhost:7043/Pizza> put 3 -c  "{"id": 3, "name":"American", "isGlutenFree":false}" 
+HTTP/1.1 204 No Content
+Date: Fri, 06 Nov 2026 03:22:18 GMT
+Server: Kestrel
+
+https://localhost:7043/Pizza> get
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 06 Nov 2026 03:22:27 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+[
+  {
+    "id": 1,
+    "name": "Classic Italian",
+    "isGlutenFree": false
+  },
+  {
+    "id": 2,
+    "name": "Veggie",
+    "isGlutenFree": true
+  },
+  {
+    "id": 3,
+    "name": "American",
+    "isGlutenFree": false
+  }
+]
+
+// DELETE
+
+https://localhost:7043/Pizza> delete 3
+HTTP/1.1 204 No Content
+Date: Fri, 06 Nov 2026 03:23:06 GMT
+Server: Kestrel
+
+
+https://localhost:7043/Pizza> get
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 06 Nov 2026 03:23:09 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+[
+  {
+    "id": 1,
+    "name": "Classic Italian",
+    "isGlutenFree": false
+  },
+  {
+    "id": 2,
+    "name": "Veggie",
+    "isGlutenFree": true
+  }
+]
+
+ 
+
+. A text copy of your working sales summary function from the Work with files and directories in a .NET app module.
+
+void GenerateSalesSummary(
+    IEnumerable<string> salesFiles,
+    double grandTotal)
+{
+    var report = new List<string>();
+
+    report.Add("Sales Summary");
+    report.Add("-----------------");
+    report.Add($"Total Sales: {grandTotal:C}");
+    report.Add("");
+    report.Add("Details:");
+
+    foreach (var file in salesFiles)
+    {
+        string salesJson = File.ReadAllText(file);
+
+        SalesData? data =
+            JsonConvert.DeserializeObject<SalesData>(salesJson);
+
+        double fileTotal = data?.Total ?? 0;
+
+        string fileName = Path.GetRelativePath(storesDirectory, file);
+
+        report.Add($"{fileName}: {fileTotal:C}");
+    }
+
+    string reportPath = Path.Combine(
+        salesTotalDir,
+        "SalesSummary.txt"
+    );
+
+    File.WriteAllLines(reportPath, report);
+
+    Console.WriteLine("Sales summary created successfully!");
+}
+
+Result:
+Sales Summary
+-----------------
+Total Sales: $2,012.20
+
+Details:
+sales.json: $88.88
+201\sales.json: $501.22
+202\sales.json: $1,234.22
+203\sales.json: $99.00
+204\sales.json: $88.88
